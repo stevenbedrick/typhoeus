@@ -51,6 +51,15 @@ describe "request" do
     Typhoeus::Request.new("http://localhost:3000", :params => {:foo => "bar"}).url.should == "http://localhost:3000?foo=bar"
   end
   
+  it "should post large data and not have huge URL" do
+    
+    long_str = "In dividing Xenopus eggs, furrowing is accompanied by expansion of a new domain of plasma membrane in the cleavage plane. The source of the new membrane is known to include a store of oogenetically produced exocytotic vesicles, but the site where their exocytosis occurs has not been described. Previous work revealed a V-shaped array of microtubule bundles at the base of advancing furrows. Cold shock or exposure to nocodazole halted expansion of the new membrane domain, which suggests that these microtubules are involved in the localized exocytosis. In the present report, scanning electron microscopy revealed collections of pits or craters, up to approximately 1.5 micro m in diameter. These pits are evidently fusion pores at sites of recent exocytosis, clustered in the immediate vicinity of the deepening furrow base and therefore near the furrow microtubules. Confocal microscopy near the furrow base of live embryos labeled with the membrane dye FM1-43 captured time-lapse sequences of individual exocytotic events in which irregular patches of approximately 20 micro m(2) of unlabeled membrane abruptly displaced pre-existing FM1-43-labeled surface. In some cases, stable fusion pores, approximately 2 micro m in diameter, were seen at the surface for up to several minutes before suddenly delivering patches of unlabeled membrane. To test whether the presence of furrow microtubule bundles near the surface plays a role in directing or concentrating this localized exocytosis, membrane expansion was examined in embryos exposed to D(2)O to induce formation of microtubule monasters randomly under the surface. D(2)O treatment resulted in a rapid, uniform expansion of the egg surface via random, ectopic exocytosis of vesicles. This D(2)O-induced membrane expansion was completely blocked with nocodazole, indicating that the ectopic exocytosis was microtubule-dependent. Results indicate that exocytotic vesicles are present throughout the egg subcortex, and that the presence of microtubules near the surface is sufficient to mobilize them for exocytosis at the end of the cell cycle."
+    
+    response = Typhoeus::Request.post("http://translate.google.com/translate_t", :params => {'sl'=>'en','tl'=>'es','text'=>long_str})
+    response.code.should == 200
+    
+  end
+  
   it "takes request body as an option" do
     Typhoeus::Request.new("http://localhost:3000", :body => "whatever").body.should == "whatever"
   end

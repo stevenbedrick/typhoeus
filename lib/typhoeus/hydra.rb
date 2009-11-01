@@ -111,6 +111,7 @@ module Typhoeus
       easy.headers      = request.headers if request.headers
       easy.request_body = request.body    if request.body
       easy.timeout      = request.timeout if request.timeout
+      easy.post_data    = request.post_data if (request.method == :post and request.post_data)
       easy.on_success do |easy|
         handle_request(request, response_from_easy(easy, request))
         release_easy_object(easy)

@@ -1,6 +1,6 @@
 module Typhoeus
   class Request
-    attr_accessor :method, :params, :body, :headers, :timeout, :user_agent, :response, :cache_timeout
+    attr_accessor :method, :params, :body, :headers, :timeout, :user_agent, :response, :cache_timeout, :post_data
     attr_reader   :url
     
     def initialize(url, options = {})
@@ -11,10 +11,15 @@ module Typhoeus
       @headers          = options[:headers] || {}
       @user_agent       = options[:user_agent] || Typhoeus::USER_AGENT
       @cache_timeout    = options[:cache_timeout]
-      @url              = @params ? "#{url}?#{params_string}" : url
+      if options[:method] == :post
+        @url = url
+      else
+        @url              = @params ? "#{url}?#{params_string}" : url
+      end
       @on_complete      = nil
       @after_complete   = nil
       @handled_response = nil
+      @post_data = params_string
     end
     
     def host
